@@ -1,0 +1,230 @@
+{
+  "airports": [
+    {
+      "code": "JFK",
+      "name": "John F. Kennedy International Airport",
+      "city": "New York",
+      "country": "USA",
+      "latitude": 40.6413,
+      "longitude": -73.7781,
+      "elevation": 13,
+      "timezone": "America/New_York"
+    },
+    {
+      "code": "LAX",
+      "name": "Los Angeles International Airport",
+      "city": "Los Angeles",
+      "country": "USA",
+      "latitude": 33.9425,
+      "longitude": -118.4081,
+      "elevation": 38,
+      "timezone": "America/Los_Angeles"
+    },
+    {
+      "code": "ORD",
+      "name": "O'Hare International Airport",
+      "city": "Chicago",
+      "country": "USA",
+      "latitude": 41.9742,
+      "longitude": -87.9073,
+      "elevation": 201,
+      "timezone": "America/Chicago"
+    },
+    {
+      "code": "DFW",
+      "name": "Dallas/Fort Worth International Airport",
+      "city": "Dallas",
+      "country": "USA",
+      "latitude": 32.8998,
+      "longitude": -97.0403,
+      "elevation": 134,
+      "timezone": "America/Chicago"
+    },
+    {
+      "code": "SFO",
+      "name": "San Francisco International Airport",
+      "city": "San Francisco",
+      "country": "USA",
+      "latitude": 37.6213,
+      "longitude": -122.379,
+      "elevation": 13,
+      "timezone": "America/Los_Angeles"
+    },
+    {
+      "code": "LHR",
+      "name": "London Heathrow Airport",
+      "city": "London",
+      "country": "UK",
+      "latitude": 51.47,
+      "longitude": -0.4543,
+      "elevation": 25,
+      "timezone": "Europe/London"
+    },
+    {
+      "code": "CDG",
+      "name": "Charles de Gaulle Airport",
+      "city": "Paris",
+      "country": "France",
+      "latitude": 49.0097,
+      "longitude": 2.5479,
+      "elevation": 119,
+      "timezone": "Europe/Paris"
+    },
+    {
+      "code": "FRA",
+      "name": "Frankfurt Airport",
+      "city": "Frankfurt",
+      "country": "Germany",
+      "latitude": 50.0379,
+      "longitude": 8.5622,
+      "elevation": 106,
+      "timezone": "Europe/Berlin"
+    },
+    {
+      "code": "AMS",
+      "name": "Amsterdam Airport Schiphol",
+      "city": "Amsterdam",
+      "country": "Netherlands",
+      "latitude": 52.3676,
+      "longitude": 4.9041,
+      "elevation": -3,
+      "timezone": "Europe/Amsterdam"
+    },
+    {
+      "code": "NRT",
+      "name": "Narita International Airport",
+      "city": "Tokyo",
+      "country": "Japan",
+      "latitude": 35.772,
+      "longitude": 140.3929,
+      "elevation": 43,
+      "timezone": "Asia/Tokyo"
+    },
+    {
+      "code": "PEK",
+      "name": "Beijing Capital International Airport",
+      "city": "Beijing",
+      "country": "China",
+      "latitude": 40.0799,
+      "longitude": 116.6031,
+      "elevation": 43,
+      "timezone": "Asia/Shanghai"
+    },
+    {
+      "code": "SIN",
+      "name": "Singapore Changi Airport",
+      "city": "Singapore",
+      "country": "Singapore",
+      "latitude": 1.3644,
+      "longitude": 103.9915,
+      "elevation": 7,
+      "timezone": "Asia/Singapore"
+    },
+    {
+      "code": "DXB",
+      "name": "Dubai International Airport",
+      "city": "Dubai",
+      "country": "UAE",
+      "latitude": 25.2532,
+      "longitude": 55.3657,
+      "elevation": 19,
+      "timezone": "Asia/Dubai"
+    },
+    {
+      "code": "SYD",
+      "name": "Sydney Kingsford Smith Airport",
+      "city": "Sydney",
+      "country": "Australia",
+      "latitude": -33.9399,
+      "longitude": 151.1753,
+      "elevation": 6,
+      "timezone": "Australia/Sydney"
+    },
+    {
+      "code": "GRU",
+      "name": "São Paulo/Guarulhos International Airport",
+      "city": "São Paulo",
+      "country": "Brazil",
+      "latitude": -23.4356,
+      "longitude": -46.4731,
+      "elevation": 750,
+      "timezone": "America/Sao_Paulo"
+    },
+    {
+      "code": "ATL",
+      "name": "Hartsfield-Jackson Atlanta International Airport",
+      "city": "Atlanta",
+      "country": "USA",
+      "latitude": 33.6407,
+      "longitude": -84.4277,
+      "elevation": 313,
+      "timezone": "America/New_York"
+    },
+    {
+      "code": "MIA",
+      "name": "Miami International Airport",
+      "city": "Miami",
+      "country": "USA",
+      "latitude": 25.7959,
+      "longitude": -80.287,
+      "elevation": 3,
+      "timezone": "America/New_York"
+    },
+    {
+      "code": "BOS",
+      "name": "Logan International Airport",
+      "city": "Boston",
+      "country": "USA",
+      "latitude": 42.3656,
+      "longitude": -71.0096,
+      "elevation": 6,
+      "timezone": "America/New_York"
+    },
+    {
+      "code": "SEA",
+      "name": "Seattle-Tacoma International Airport",
+      "city": "Seattle",
+      "country": "USA",
+      "latitude": 47.4502,
+      "longitude": -122.3088,
+      "elevation": 132,
+      "timezone": "America/Los_Angeles"
+    },
+    {
+      "code": "YYZ",
+      "name": "Toronto Pearson International Airport",
+      "city": "Toronto",
+      "country": "Canada",
+      "latitude": 43.6777,
+      "longitude": -79.6248,
+      "elevation": 173,
+      "timezone": "America/Toronto"
+    }
+  ],
+  "airlines": [
+    "American Airlines",
+    "Delta Air Lines",
+    "United Airlines",
+    "Southwest Airlines",
+    "Lufthansa",
+    "British Airways",
+    "Air France",
+    "KLM",
+    "Singapore Airlines",
+    "Emirates",
+    "Qatar Airways",
+    "Japan Airlines",
+    "All Nippon Airways",
+    "Cathay Pacific",
+    "Turkish Airlines",
+    "Air Canada",
+    "Qantas",
+    "Etihad Airways"
+  ],
+  "aircraft_types": {
+    "long_haul": ["Boeing 777-300ER", "Boeing 787-9", "Airbus A350-900", "Airbus A380-800"],
+    "medium_haul": ["Boeing 787-8", "Airbus A330-300", "Boeing 767-300"],
+    "short_haul": ["Boeing 737-800", "Airbus A320neo", "Boeing 737 MAX 8"],
+    "regional": ["ATR 72-600", "Bombardier CRJ-900", "Embraer E175"]
+  }
+}

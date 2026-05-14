@@ -1,0 +1,21 @@
+code,name,city,country,latitude,longitude,elevation,timezone
+JFK,John F. Kennedy International Airport,New York,USA,40.6413,-73.7781,13,America/New_York
+LAX,Los Angeles International Airport,Los Angeles,USA,33.9425,-118.4081,38,America/Los_Angeles
+ORD,O'Hare International Airport,Chicago,USA,41.9742,-87.9073,201,America/Chicago
+DFW,Dallas/Fort Worth International Airport,Dallas,USA,32.8998,-97.0403,134,America/Chicago
+SFO,San Francisco International Airport,San Francisco,USA,37.6213,-122.379,13,America/Los_Angeles
+LHR,London Heathrow Airport,London,UK,51.47,-0.4543,25,Europe/London
+CDG,Charles de Gaulle Airport,Paris,France,49.0097,2.5479,119,Europe/Paris
+FRA,Frankfurt Airport,Frankfurt,Germany,50.0379,8.5622,106,Europe/Berlin
+AMS,Amsterdam Airport Schiphol,Amsterdam,Netherlands,52.3676,4.9041,-3,Europe/Amsterdam
+NRT,Narita International Airport,Tokyo,Japan,35.772,140.3929,43,Asia/Tokyo
+PEK,Beijing Capital International Airport,Beijing,China,40.0799,116.6031,43,Asia/Shanghai
+SIN,Singapore Changi Airport,Singapore,Singapore,1.3644,103.9915,7,Asia/Singapore
+DXB,Dubai International Airport,Dubai,UAE,25.2532,55.3657,19,Asia/Dubai
+SYD,Sydney Kingsford Smith Airport,Sydney,Australia,-33.9399,151.1753,6,Australia/Sydney
+GRU,São Paulo/Guarulhos International Airport,São Paulo,Brazil,-23.4356,-46.4731,750,America/Sao_Paulo
+ATL,Hartsfield-Jackson Atlanta International Airport,Atlanta,USA,33.6407,-84.4277,313,America/New_York
+MIA,Miami International Airport,Miami,USA,25.7959,-80.287,3,America/New_York
+BOS,Logan International Airport,Boston,USA,42.3656,-71.0096,6,America/New_York
+SEA,Seattle-Tacoma International Airport,Seattle,USA,47.4502,-122.3088,132,America/Los_Angeles
+YYZ,Toronto Pearson International Airport,Toronto,Canada,43.6777,-79.6248,173,America/Toronto

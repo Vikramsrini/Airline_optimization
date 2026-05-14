@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Route Optimization - Intelligent Flight Planning</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDZmCxcHJwVwioVvw6EMt9oRjlKeHwReQ&libraries=geometry"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --sky-blue: #4A90E2;
+            --cloud-white: #FAFBFC;
+            --charcoal: #2C3E50;
+            --amber: #F39C12;
+            --emerald: #27AE60;
+            --coral: #E74C3C;
+            --mist-gray: #BDC3C7;
+            --storm-gray: #34495E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--cloud-white) 0%, #E8F4FD 100%);
+            color: var(--charcoal);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(250, 251, 252, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--mist-gray);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--sky-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--sky-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('resources/hero-aviation.jpg') center/cover;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(250, 251, 252, 0.8) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--sky-blue), var(--charcoal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--storm-gray);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .typed-text {
+            color: var(--sky-blue);
+            font-weight: 600;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--sky-blue);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .hero-cta:hover {
+            background: #3A7BC8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+        }
+
+        /* Main Application */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-top: 80px;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .app-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+        }
+
+        .app-description {
+            font-size: 1.1rem;
+            color: var(--storm-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid var(--mist-gray);
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--charcoal);
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select {
+            padding: 1rem;
+            border: 2px solid var(--mist-gray);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--sky-blue);
+        }
+
+        .checkbox-label {
+            font-weight: 500;
+            color: var(--charcoal);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--sky-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3A7BC8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--charcoal);
+            border: 2px solid var(--mist-gray);
+        }
+
+        .btn-secondary:hover {
+            background: var(--cloud-white);
+            border-color: var(--sky-blue);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Loading States */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--mist-gray);
+            border-top: 4px solid var(--sky-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--storm-gray);
+            font-weight: 500;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 0.5rem;
+        }
+
+        .results-subtitle {
+            color: var(--storm-gray);
+            font-size: 1.1rem;
+        }
+
+        /* Route Cards */
+        .routes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .route-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--mist-gray);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .route-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .route-card.best-route {
+            border-color: var(--emerald);
+            background: linear-gradient(135deg, #f8fffe 0%, #f0fdfa 100%);
+        }
+
+        .route-card.best-route::before {
+            content: 'BEST ROUTE';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--emerald);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .route-airports {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .airport-code {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--sky-blue);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .route-arrow {
+            color: var(--mist-gray);
+            font-size: 1.2rem;
+        }
+
+        .route-type {
+            background: var(--cloud-white);
+            color: var(--storm-gray);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .route-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--storm-gray);
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        .route-score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--cloud-white);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .score-value.good {
+            color: var(--emerald);
+        }
+
+        .score-value.fair {
+            color: var(--amber);
+        }
+
+        .score-value.poor {
+            color: var(--coral);
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            color: var(--storm-gray);
+            margin-top: 0.25rem;
+        }
+
+        .weather-alerts {
+            margin-bottom: 1rem;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .alert-icon {
+            color: var(--amber);
+        }
+
+        .route-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 8px;
+        }
+
+        /* Map Container */
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            height: 500px;
+        }
+
+        #route-map {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            height: 400px;
+        }
+
+        #route-chart {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        /* Data Upload Section */
+        .upload-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            border: 1px solid var(--mist-gray);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--mist-gray);
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--sky-blue);
+            background: #f8f9fa;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--sky-blue);
+            background: #e3f2fd;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--mist-gray);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            font-size: 1.1rem;
+            color: var(--storm-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-hint {
+            font-size: 0.9rem;
+            color: var(--mist-gray);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--charcoal);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .app-container {
+                padding: 1rem;
+            }
+
+            .control-panel {
+                padding: 1.5rem;
+            }
+
+            .control-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .routes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .route-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Weather Info Section */
+        .weather-info {
+            margin: 2rem 0;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .weather-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .weather-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .weather-card.departure {
+            border-color: rgba(74, 144, 226, 0.3);
+        }
+
+        .weather-card.arrival {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .weather-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--cloud-white);
+        }
+
+        .weather-airport {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .weather-airport i {
+            font-size: 1.2rem;
+            color: var(--sky-blue);
+        }
+
+        .weather-airport-code {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .weather-label {
+            background: var(--cloud-white);
+            color: var(--storm-gray);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .weather-main {
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        .weather-icon-large {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .weather-temp {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-condition {
+            font-size: 1.1rem;
+            color: var(--storm-gray);
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--cloud-white);
+        }
+
+        .weather-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--storm-gray);
+        }
+
+        .weather-detail-item i {
+            color: var(--sky-blue);
+            width: 20px;
+            text-align: center;
+        }
+
+        .weather-alert {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--amber);
+        }
+
+        .weather-alert i {
+            font-size: 1.1rem;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cloud-white);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--mist-gray);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--sky-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <i class="fas fa-plane"></i>
+                <span>RouteOptimizer</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#optimizer">Route Optimizer</a></li>
+                <li><a href="dashboard.html">Spark Dashboard</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Intelligent Route Optimization</h1>
+            <p class="hero-subtitle">
+                Optimize your flight routes with <span class="typed-text" id="typed-text"></span>
+            </p>
+            <a href="#optimizer" class="hero-cta">
+                <i class="fas fa-route"></i>
+                Start Optimizing
+            </a>
+        </div>
+    </section>
+
+    <!-- Main Application -->
+    <main class="app-container" id="optimizer">
+        <div class="app-header fade-in">
+            <h2 class="app-title">Airline Route Optimizer</h2>
+            <p class="app-description">
+                Advanced route planning with real-time weather data, intelligent algorithms, and comprehensive analytics
+            </p>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel fade-in">
+            <div class="control-grid">
+                <div class="form-group">
+                    <label class="form-label" for="source-airport">Source Airport</label>
+                    <select class="form-select" id="source-airport" required>
+                        <option value="">Select source airport...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="destination-airport">Destination Airport</label>
+                    <select class="form-select" id="destination-airport" required>
+                        <option value="">Select destination airport...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="max-stops">Maximum Stops</label>
+                    <select class="form-select" id="max-stops">
+                        <option value="0">Direct flights only</option>
+                        <option value="1" selected>1 stop maximum</option>
+                        <option value="2">2 stops maximum</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="weather-weight">Weather Consideration</label>
+                    <select class="form-select" id="weather-weight">
+                        <option value="0">Ignore weather</option>
+                        <option value="0.3" selected>Moderate (30%)</option>
+                        <option value="0.5">High (50%)</option>
+                        <option value="0.7">Very High (70%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-checkbox">
+                <input type="checkbox" id="include-alternatives" class="checkbox-input">
+                <label for="include-alternatives" class="checkbox-label">
+                    Include alternative route suggestions
+                </label>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="optimize-btn">
+                    <i class="fas fa-search"></i>
+                    Find Optimal Routes
+                </button>
+                <button class="btn btn-secondary" id="clear-btn">
+                    <i class="fas fa-eraser"></i>
+                    Clear
+                </button>
+                <button class="btn btn-secondary" id="upload-btn">
+                    <i class="fas fa-upload"></i>
+                    Upload Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p class="loading-text">Optimizing routes with intelligent algorithms...</p>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="results">
+            <div class="results-header fade-in">
+                <h3 class="results-title">Optimized Routes</h3>
+                <p class="results-subtitle">Intelligent route recommendations with weather analysis</p>
+            </div>
+
+            <div class="routes-grid" id="routes-grid">
+                <!-- Route cards will be dynamically inserted here -->
+            </div>
+
+            <!-- Map Container -->
+            <div class="map-container fade-in">
+                <div id="route-map"></div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="chart-container fade-in">
+                <div id="route-chart"></div>
+            </div>
+        </div>
+
+        <!-- Data Upload Section -->
+        <div class="upload-section" id="upload-section" style="display: none;">
+            <h3 style="margin-bottom: 1.5rem; color: var(--charcoal);">Upload Custom Data</h3>
+            <div class="upload-area" id="upload-area">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">Drop your CSV files here or click to browse</div>
+                <div class="upload-hint">Supports routes.csv and airports.csv formats</div>
+                <input type="file" class="file-input" id="file-input" accept=".csv">
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">
+                © 2024 Airline Route Optimization System. Built with PySpark, Flask, and modern web technologies.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>
